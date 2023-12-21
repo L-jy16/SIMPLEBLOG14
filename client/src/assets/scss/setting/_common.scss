@@ -47,3 +47,69 @@ section {
     opacity: 1;
     transition: opacity 0.5s;
 }
+
+
+// reple
+.reple {
+    border: 1px solid #000;
+    margin: 10px;
+    padding: 10px;
+    position: relative;
+}
+
+.nickname {
+    display: flex;
+}
+
+.nickname p {
+    margin-right: 5px;
+}
+
+.reple-info {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1100;
+}
+
+// mypage
+.modal {
+    border: 1px solid #000;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.mypage {
+    text-align: center;
+    padding: 20px;
+}
+
+.mypage label {
+    cursor: pointer;
+}
+
+.mypage input {
+    display: none;
+}
+
+// list__btn
+
+.list__btn {
+    padding: 20px;
+}
+
+.list__btn button {
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 8px 15px;
+    margin-right: 2px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #000;
+}
+
+.list__search input {
+    border: 1px solid #000;
+    padding: 5px 10px;
+    margin: 20px;
+}

@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import PostImage from './PostImage';
+import { useSelector } from 'react-redux'
 
 const PostWrite = () => {
     const [title, setTitle] = useState("");
@@ -9,6 +10,15 @@ const PostWrite = () => {
     const [image, setImage] = useState("");
 
     let navigate = useNavigate();
+    const user = useSelector((state) => state.user)
+
+    useEffect(() => {
+        if (!user.accessToken) {
+            alert("로그인한 회원만 작성이 가능합니다.");
+            navigate("/login");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -21,6 +31,7 @@ const PostWrite = () => {
             title: title,
             content: content,
             image: image,
+            uid: user.uid,
         }
 
         axios.post("/api/post/write", body)

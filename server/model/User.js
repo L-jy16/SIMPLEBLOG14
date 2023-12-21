@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema(
         userNum: Number,
         email: String,
         displayName: String,
-        uid: String
+        uid: String,
+        photoURL: String,
     },
     { collection: "users" }
 );

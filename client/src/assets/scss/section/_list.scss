@@ -62,23 +62,29 @@
             margin-bottom: 20px;
         }
 
-        .auth {
-            font-size: 14px;
-            color: rgb(143, 149, 171);
-            position: relative;
-            padding-left: 30px;
+        .list_cont_bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-            &::before {
-                content: '';
-                width: 20px;
-                height: 20px;
-                background-color: rgb(100, 70, 255);
-                position: absolute;
-                left: 0;
-                top: 0;
-                border-radius: 50%;
+            .auth {
+
+                // width: 30%;
+                .avatar {
+                    margin-right: 5px;
+                }
+
+                font-size: 14px;
+                color: rgb(143, 149, 171);
+            }
+
+            .time {
+                // width: 70%;
+                font-size: 12px;
+                color: rgb(143, 149, 171);
             }
         }
+
     }
 }
 

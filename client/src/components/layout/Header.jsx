@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import firebase from '../../firebase.js'
+import Avatar from 'react-avatar'
 
 const Header = () => {
     const user = useSelector(state => state.user);
@@ -16,7 +17,7 @@ const Header = () => {
         <header id='header' role='banner'>
             <div className='left'>
                 <h1 className='logo'>
-                    <Link to="/">webs ai</Link>
+                    <Link to="/">Lee Blog</Link>
                 </h1>
                 <nav className='nav'>
                     <ul>
@@ -45,10 +46,18 @@ const Header = () => {
                 ) : (
                     <ul>
                         <li>
-                            {user.displayName}님 방가워요! 🥳
+                            <Link to="/mypage">
+                                {user.displayName}님 방가워요!
+                                <Avatar
+                                    size='30'
+                                    round={true}
+                                    src={user.photoURL}
+                                />
+                            </Link>
+
                         </li>
                         <li>
-                            <Link onClick={(() => LogoutHandler())}>로그아웃</Link>
+                            <Link to="/" onClick={(() => LogoutHandler())}>로그아웃</Link>
                         </li>
                     </ul>
                 )}

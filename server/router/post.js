@@ -4,25 +4,37 @@ const router = express.Router();
 // 스키마 만들기
 const { Post } = require("../model/Post.js");
 const { Counter } = require("../model/Counter.js");
+const { User } = require("../model/User.js");
 
 // 이미지 업로드
 const setUpload = require("../util/upload.js");
 
 // 글 쓰기
 router.post("/write", (req, res) => {
-    let temp = req.body;
+    let temp = {
+        title: req.body.title,
+        content: req.body.content,
+        image: req.body.image
+    };
 
     Counter.findOne({ name: "counter" })
         .exec()
         .then((counter) => {
-            temp.postNum = counter.postNum;
+            temp.postNum = counter.postNum; // 번호 추가
 
-            const BlogWrite = new Post(temp);
-            BlogWrite.save()
-                .then(() => {
-                    Counter.updateOne({ name: "counter" }, { $inc: { postNum: 1 } }).then(() => {
-                        res.status(200).json({ success: true });
-                    })
+            User.findOne({ uid: req.body.uid })
+                .exec()
+                .then((userInfo) => {
+                    temp.author = userInfo._id; // 작가 추가
+
+                    const BlogWrite = new Post(temp);
+                    BlogWrite
+                        .save()
+                        .then(() => {
+                            Counter.updateOne({ name: "counter" }, { $inc: { postNum: 1 } }).then(() => {
+                                res.status(200).json({ success: true });
+                            })
+                        })
                 })
         })
         .catch((err) => {
@@ -33,8 +45,23 @@ router.post("/write", (req, res) => {
 
 // 글목록
 router.post("/list", (req, res) => {
+    let sort = {};
+
+    if (req.body.sort == "최신순") {
+        sort.createdAt = -1
+    } else {
+        sort.repleNum = -1
+    }
+
     Post
-        .find()
+        .find({
+            $or: [
+                { title: { $regex: req.body.searchTerm } },
+                { content: { $regex: req.body.searchTerm } },
+            ]
+        })  // title와 content 내용 안에 검색한 키워드가 있는지 확인
+        .populate("author") //join문과 같은 역할
+        .sort(sort) // 최신순, 인기순 정렬
         .exec()
         .then((result) => {
             res.status(200).json({ success: true, postList: result })
@@ -49,6 +76,7 @@ router.post("/list", (req, res) => {
 router.post("/detail", (req, res) => {
     Post
         .findOne({ postNum: req.body.postNum })
+        .populate("author") //join문과 같은 역할
         .exec()
         .then((result) => {
             res.status(200).json({ success: true, post: result });
